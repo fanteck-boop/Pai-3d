@@ -5,6 +5,7 @@ public class MonsterSound : MonoBehaviour
     public AudioClip monsterSound;   // Sound clip for the monster
     public float interval = 5f;     // Interval between sounds in seconds
     private AudioSource audioSource;
+    private bool isAlive = true;    // Tracks if the monster is alive
 
     void Start()
     {
@@ -22,9 +23,20 @@ public class MonsterSound : MonoBehaviour
 
     void PlayMonsterSound()
     {
-        if (audioSource != null && monsterSound != null)
+        if (isAlive && audioSource != null && monsterSound != null)
         {
             audioSource.PlayOneShot(monsterSound);
+        }
+    }
+
+    // Public method to stop the sound when the monster dies
+    public void StopMonsterSound()
+    {
+        isAlive = false;
+        CancelInvoke(nameof(PlayMonsterSound));
+        if (audioSource.isPlaying)
+        {
+            audioSource.Stop();
         }
     }
 }
