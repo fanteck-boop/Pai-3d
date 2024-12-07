@@ -2,32 +2,54 @@ using UnityEngine;
 
 public class GunBase : MonoBehaviour
 {
-    public float damage = 10f;
-    public float range = 100f;
-    public float fireRate = 1f;
+    public Camera gunCamera;      // Assign the camera used for aiming
+    public int damage = 15;       // Damage per shot
+    public float range = 200f;    // Shooting range
+    public float fireRate = 1.5f; // Time between shots
+    public float pushForce = 5f;  // Force to push the enemy back
 
-    protected float nextFireTime;
+    private float nextFireTime = 0f;
 
-    public void TryShoot()
+    void Update()
     {
-        if (Time.time >= nextFireTime)
+        if (Input.GetMouseButtonDown(0) && Time.time >= nextFireTime) // Left mouse button
         {
-            nextFireTime = Time.time + 1f / fireRate;
             Shoot();
+            nextFireTime = Time.time + fireRate;
         }
     }
 
-    protected virtual void Shoot()
+    void Shoot()
     {
-        Debug.Log("Default gun shooting logic. Override this in derived classes.");
-    }
+        // Create a ray from the center of the screen
+        Ray ray = gunCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+        RaycastHit hit;
 
-    protected void DealDamage(Transform target, float damage)
-    {
-        Health targetHealth = target.GetComponent<Health>();
-        if (targetHealth != null)
+        if (Physics.Raycast(ray, out hit, range))
         {
-            targetHealth.TakeDamage(damage);
+            // Check if the hit object has an EnemyHealth component
+            EnemyHealth enemy = hit.transform.GetComponent<EnemyHealth>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+            }
+
+            // Apply a force to move the enemy back if it has a Rigidbody
+            Rigidbody enemyRigidbody = hit.transform.GetComponent<Rigidbody>();
+            if (enemyRigidbody != null)
+            {
+                Vector3 pushDirection = hit.transform.position - ray.origin; // Direction from the gun to the hit object
+                pushDirection.Normalize(); // Normalize the direction to ensure consistent force application
+                enemyRigidbody.AddForce(pushDirection * pushForce, ForceMode.Impulse);
+            }
+            ExplosiveBarrel barrel = hit.transform.GetComponent<ExplosiveBarrel>();
+
+            if (barrel != null)
+            {
+                barrel.TakeDamage(1); // Barrel takes 1 damage per shot
+            }
+            // Optional: Add hit effects like particles or decals
+            Debug.Log("Hit: " + hit.transform.name);
         }
     }
 }
