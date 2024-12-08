@@ -36,9 +36,13 @@ public class EnemyMovement : MonoBehaviour
         }
 
         // If the enemy is colliding with the player, trigger attack animation
-        if (isColliding)
+        if (isColliding == true && animator != null)
         {
-            Attack();
+                animator.SetBool("isColliding", true); // Trigger attack animation
+        }
+        else
+        {
+            animator.SetBool("isColliding", false); // Reset attack animation
         }
     }
 
@@ -68,13 +72,6 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    void Attack()
-    {
-        if (animator != null)
-        {
-            animator.SetTrigger("Attack"); // Trigger attack animation
-        }
-    }
 
     // This will be triggered when the enemy collides with the player or another object
     void OnCollisionEnter(Collision collision)
