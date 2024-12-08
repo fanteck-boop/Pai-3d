@@ -3187,9 +3187,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8529248264143926973}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 216.53, y: 3.2216704, z: 175.8}
-  m_LocalScale: {x: 1.5300001, y: 1.5300001, z: 1.5300001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3686001500782231869}
@@ -3258,6 +3258,7 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   navMeshAgent: {fileID: 7535629995360594648}
+  vulnerableColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &1483835780232255713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3271,7 +3272,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterSound: {fileID: 8300000, guid: b675bea3b5d7ca447bbf29288f742a3c, type: 3}
-  interval: 5
+  interval: 10
+  volume: 0.006
 --- !u!114 &5053590514426278484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3285,8 +3287,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  detectionRange: 15
-  movementSpeed: 3.5
+  detectionRange: 30
+  movementSpeed: 2
 --- !u!195 &7535629995360594648
 NavMeshAgent:
   m_ObjectHideFlags: 0

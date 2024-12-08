@@ -13,6 +13,9 @@ public class PlayerMovement : MonoBehaviour
     public float rollDistance = 1f; // Distance covered during the roll
     public float rollDuration = 0.3f; // Duration of the roll in seconds
 
+    // Detection range
+    public float detectionRadius = 10f; // Radius of the detection range
+
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
     private CharacterController characterController;
@@ -21,9 +24,12 @@ public class PlayerMovement : MonoBehaviour
     private bool isRolling = false;
     private bool isInvulnerable = false;
 
+    private Animator animator; // Reference to Animator
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>(); // Get Animator component
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -61,6 +67,16 @@ public class PlayerMovement : MonoBehaviour
         }
 
         characterController.Move(moveDirection * Time.deltaTime);
+
+        // Movement threshold to prevent small values keeping the isMoving state true
+        float movementThreshold = 0.1f;
+        bool isMoving = Mathf.Abs(curSpeedX) > movementThreshold || Mathf.Abs(curSpeedY) > movementThreshold;
+
+        // Update animator based on movement
+        if (animator != null)
+        {
+            animator.SetBool("isMoving", isMoving);
+        }
     }
 
     void HandleLook()
@@ -102,5 +118,12 @@ public class PlayerMovement : MonoBehaviour
     public bool IsInvulnerable()
     {
         return isInvulnerable;
+    }
+
+    // Draw detection range gizmo
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 }

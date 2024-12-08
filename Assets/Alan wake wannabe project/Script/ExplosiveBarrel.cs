@@ -4,7 +4,7 @@ using UnityEngine;
 public class ExplosiveBarrel : MonoBehaviour
 {
     public int health = 2;                 // Number of hits the barrel can take
-    public float explosionDelay = 5f;     // Time before the barrel explodes after the first shot
+    public float explosionDelay = 2f;     // Time before the barrel explodes after the first shot
     public float explosionRadius = 5f;    // Radius of the explosion
     public int explosionDamage = 100;     // Damage dealt to objects within the explosion radius
     public float explosionForce = 30f;    // Force applied to nearby objects when the barrel explodes
@@ -30,9 +30,10 @@ public class ExplosiveBarrel : MonoBehaviour
 
         health -= damage;
 
-        if (health <= 0)
+        if (health <= 2)
         {
             // Explode immediately
+            audioSource.PlayOneShot(explosionSound);
             Explode();
             audioSource.PlayOneShot(explosionSound);
         }
@@ -52,8 +53,9 @@ public class ExplosiveBarrel : MonoBehaviour
         // Explode if not already destroyed
         if (health > 0)
         {
-            Explode();
             audioSource.PlayOneShot(explosionSound);
+            Explode();
+            
         }
     }
 

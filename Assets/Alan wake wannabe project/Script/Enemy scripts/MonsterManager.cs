@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
@@ -13,6 +14,7 @@ public class EnemyHealth : MonoBehaviour
     private Renderer enemyRenderer; // Renderer to change material color
     private Color originalColor;    // To store the original color of the enemy
     public Color vulnerableColor = Color.red; // Color to display when vulnerable
+
 
     private void Awake()
     {
@@ -37,7 +39,6 @@ public class EnemyHealth : MonoBehaviour
 
     private void ActivateRagdoll(bool status)
     {
-        // Enable or disable all ragdoll colliders and rigidbodies
         foreach (Collider col in ragdollColliders)
         {
             if (col != mainCollider) // Ensure the main collider is excluded
@@ -91,7 +92,7 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-    public void EnableVulnerability()
+    public void EnableVulnerability(float duration = -1f)
     {
         isVulnerable = true;
         Debug.Log(gameObject.name + " is now vulnerable!");
@@ -101,7 +102,9 @@ public class EnemyHealth : MonoBehaviour
         {
             enemyRenderer.material.color = vulnerableColor;
         }
+
     }
+
 
     public void DisableVulnerability()
     {
