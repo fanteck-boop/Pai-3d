@@ -5,7 +5,7 @@ public class PlayerHealth : MonoBehaviour
     public int maxHealth = 100;      // Maximum health of the player
     private int currentHealth;       // Current health of the player
     private bool canTakeDamage = true; // Tracks if the player can take damage
-    public float damageCooldown = 3f; // Cooldown time in seconds
+    public float damageCooldown = 5f; // Cooldown time in seconds
     private float damageTimer = 0f;   // Timer for how long the enemy has been colliding with the player
     private bool isCollidingWithEnemy = false; // Tracks if the player is colliding with the enemy
 
@@ -31,7 +31,7 @@ public class PlayerHealth : MonoBehaviour
             damageTimer += Time.deltaTime;
 
             // If the player has been colliding for 1 second, deal damage
-            if (damageTimer >= 1f && canTakeDamage)
+            if (damageTimer >= 2f && canTakeDamage)
             {
                 TakeDamage(30); // Deal 30 damage after 1 second of contact
             }

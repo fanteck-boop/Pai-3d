@@ -27884,6 +27884,18 @@ PrefabInstance:
       propertyPath: gravity
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 4515085912112081506, guid: 0afbe3081c5fbaa4595ed8159e34d31a, type: 3}
+      propertyPath: m_Height
+      value: 2.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515085912112081506, guid: 0afbe3081c5fbaa4595ed8159e34d31a, type: 3}
+      propertyPath: m_Radius
+      value: 0.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515085912112081506, guid: 0afbe3081c5fbaa4595ed8159e34d31a, type: 3}
+      propertyPath: m_Center.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8717649749629402125, guid: 0afbe3081c5fbaa4595ed8159e34d31a, type: 3}
       propertyPath: damage
       value: 50
