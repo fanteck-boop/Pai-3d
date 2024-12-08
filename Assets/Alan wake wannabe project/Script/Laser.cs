@@ -2,59 +2,61 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RaycastVisualize : MonoBehaviour
+public class Laser : MonoBehaviour
 {
-    private GameObject hitObj; // To store the object we hit with the ray
-    private LineRenderer raycastLineRenderer; // The LineRenderer to visualize the ray
+    public Transform laserStartPoint; // The object where the laser starts (e.g., gun muzzle)
+    public Transform laserRayOrigin; // The origin of the raycast (e.g., the camera)
+    private LineRenderer raycastLineRenderer; // The LineRenderer for visualizing the laser
+    private Color bloodRed = new Color(0.6f, 0.0f, 0.0f, 1f); // Blood red color
 
-    // Blood red color (dark red)
-    private Color bloodRed = new Color(0.6f, 0.0f, 0.0f, 1f); // Full opacity red color
-
-    // Start is called before the first frame update
     void Start()
     {
-        raycastLineRenderer = transform.GetComponent<LineRenderer>(); // Get the LineRenderer attached to the object
+        // Get or add a LineRenderer to the object
+        raycastLineRenderer = GetComponent<LineRenderer>();
         if (raycastLineRenderer == null)
         {
-            raycastLineRenderer = gameObject.AddComponent<LineRenderer>(); // Add LineRenderer if not found
+            raycastLineRenderer = gameObject.AddComponent<LineRenderer>();
         }
 
+        // Configure the LineRenderer
         raycastLineRenderer.startWidth = 0.06f;  // Width of the line at the start
         raycastLineRenderer.endWidth = 0.01f;    // Width of the line at the end
-        raycastLineRenderer.enabled = false;     // Initially, the ray is hidden
+        raycastLineRenderer.enabled = true;      // Enable the laser line
 
-        // Apply an unlit material to the LineRenderer for consistent coloring
+        // Set up an unlit material for consistent coloring
         Material lineMaterial = new Material(Shader.Find("Unlit/Color"));
         lineMaterial.color = bloodRed;
-        raycastLineRenderer.material = lineMaterial; // Assign the material to the LineRenderer
+        raycastLineRenderer.material = lineMaterial;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        RaycastHit hit; // To store information about the hit object
-        Vector3 direction = transform.forward; // The direction of the raycast (forward direction of the object)
+        if (laserStartPoint == null || laserRayOrigin == null)
+        {
+            Debug.LogError("Laser Start Point or Ray Origin is not assigned!");
+            return;
+        }
+
+        RaycastHit hit; // To store information about the raycast hit
+        Vector3 rayDirection = laserRayOrigin.forward; // Ray direction from the ray origin
 
         // Perform the raycast
-        if (Physics.Raycast(transform.position, direction, out hit, 100f)) // 100f is the max distance for the ray
+        if (Physics.Raycast(laserRayOrigin.position, rayDirection, out hit, 100f))
         {
-            // Draw the ray in the editor (for debugging)
-            Debug.DrawRay(transform.position, direction * hit.distance, bloodRed);
+            Debug.DrawRay(laserRayOrigin.position, rayDirection * hit.distance, bloodRed);
 
-            // If the ray hits something, draw the line to that point
-            raycastLineRenderer.enabled = true; // Enable the LineRenderer
-            raycastLineRenderer.SetPosition(0, transform.position); // Start of the ray
-            raycastLineRenderer.SetPosition(1, hit.point); // End of the ray (where it hits the object)
+            // Update the LineRenderer positions
+            raycastLineRenderer.SetPosition(0, laserStartPoint.position); // Laser starts at the chosen object
+            raycastLineRenderer.SetPosition(1, hit.point); // Laser ends where the ray hits
         }
         else
         {
-            // If the ray doesn't hit anything, draw a long line ahead
-            raycastLineRenderer.enabled = true; // Enable the LineRenderer
-            raycastLineRenderer.SetPosition(0, transform.position); // Start of the ray
-            raycastLineRenderer.SetPosition(1, transform.position + direction * 100f); // End of the ray (100 units ahead)
+            // If the ray doesn't hit anything, extend it 100 units forward
+            raycastLineRenderer.SetPosition(0, laserStartPoint.position); // Laser starts at the chosen object
+            raycastLineRenderer.SetPosition(1, laserRayOrigin.position + rayDirection * 100f); // Laser ends forward
         }
 
-        // Set the color of the ray to blood red in both cases (hit or miss)
+        // Ensure the laser maintains its color
         raycastLineRenderer.startColor = bloodRed;
         raycastLineRenderer.endColor = bloodRed;
     }
