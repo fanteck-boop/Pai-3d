@@ -7,6 +7,7 @@ public class EnemyMovement : MonoBehaviour
     public float detectionRange = 15f; // Range within which the enemy detects the player
     public float movementSpeed = 3.5f; // Speed of the enemy when following the player
     private bool isDead = false; // To track if the enemy is dead
+    private bool isColliding = false; // To track collision with the player
 
     private NavMeshAgent navMeshAgent; // NavMeshAgent for pathfinding
     private Animator animator; // Reference to the animator component
@@ -19,8 +20,8 @@ public class EnemyMovement : MonoBehaviour
 
     void Update()
     {
-        if (isDead)
-            return; // If dead, stop updating movement and animations
+        // Only process movement and animations if the enemy is not dead
+        if (isDead) return;
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
@@ -32,6 +33,12 @@ public class EnemyMovement : MonoBehaviour
         else
         {
             Idle();
+        }
+
+        // If the enemy is colliding with the player, trigger attack animation
+        if (isColliding)
+        {
+            Attack();
         }
     }
 
@@ -61,26 +68,31 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    public void Die()
+    void Attack()
     {
-        if (isDead) return; // Ensure the die method is not called multiple times
-
-        isDead = true;
-        Debug.Log("Enemy is dead");
-
-        // Play the death animation
         if (animator != null)
         {
-            animator.SetTrigger("Die"); // Assume you have a "Die" trigger in the animator
+            animator.SetTrigger("Attack"); // Trigger attack animation
         }
-
-        // Optionally, you can also stop movement here
-        if (navMeshAgent != null)
-        {
-            navMeshAgent.isStopped = true;
-        }
-
-
     }
 
+    // This will be triggered when the enemy collides with the player or another object
+    void OnCollisionEnter(Collision collision)
+    {
+        // Check if the enemy collided with the player (player tag must be "Player")
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            isColliding = true; // Set isColliding to true
+        }
+    }
+
+    // This will be triggered when the enemy stops colliding with the player or another object
+    void OnCollisionExit(Collision collision)
+    {
+        // Check if the enemy stopped colliding with the player (player tag must be "Player")
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            isColliding = false; // Set isColliding to false
+        }
+    }
 }

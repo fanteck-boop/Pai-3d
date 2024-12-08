@@ -10,12 +10,23 @@ public class EnemyHealth : MonoBehaviour
     private Collider[] ragdollColliders;
     private Animator animator;
 
+    private Renderer enemyRenderer; // Renderer to change material color
+    private Color originalColor;    // To store the original color of the enemy
+    public Color vulnerableColor = Color.red; // Color to display when vulnerable
+
     private void Awake()
     {
         // Get the main collider, ragdoll colliders, and animator
         mainCollider = GetComponent<Collider>();
         ragdollColliders = GetComponentsInChildren<Collider>();
         animator = GetComponentInChildren<Animator>();
+
+        // Get the Renderer component to manipulate material color
+        enemyRenderer = GetComponentInChildren<Renderer>();
+        if (enemyRenderer != null)
+        {
+            originalColor = enemyRenderer.material.color; // Save the original color
+        }
 
         // Disable ragdoll by default
         ActivateRagdoll(false);
@@ -84,12 +95,24 @@ public class EnemyHealth : MonoBehaviour
     {
         isVulnerable = true;
         Debug.Log(gameObject.name + " is now vulnerable!");
+
+        // Change the material color to vulnerableColor
+        if (enemyRenderer != null)
+        {
+            enemyRenderer.material.color = vulnerableColor;
+        }
     }
 
     public void DisableVulnerability()
     {
         isVulnerable = false;
         Debug.Log(gameObject.name + " is now invulnerable!");
+
+        // Revert the material color to the original color
+        if (enemyRenderer != null)
+        {
+            enemyRenderer.material.color = originalColor;
+        }
     }
 
     public bool IsVulnerable()
