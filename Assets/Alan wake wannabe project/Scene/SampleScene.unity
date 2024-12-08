@@ -338,8 +338,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 979345136}
-  - {fileID: 545178752}
   - {fileID: 1217485797}
+  - {fileID: 545178752}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &493995928
@@ -562,7 +562,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: cf1a73b7c1007e04d85dae010ab0f221, type: 3}
   m_Controller: {fileID: 9100000, guid: eb4e9b063f7fc4e4bbed3290b422b3eb, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -572,6 +572,11 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!195 &786715043 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 3337526508389670770, guid: 52ead5e30d6cedb4697cd155400bb7ac, type: 3}
+  m_PrefabInstance: {fileID: 5148167814448742289}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &979345133
 GameObject:
   m_ObjectHideFlags: 0
@@ -1264,9 +1269,29 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 545178752}
+    - target: {fileID: 63997002313254910, guid: 52ead5e30d6cedb4697cd155400bb7ac, type: 3}
+      propertyPath: navMeshAgent
+      value: 
+      objectReference: {fileID: 786715043}
+    - target: {fileID: 1926764610859745813, guid: 52ead5e30d6cedb4697cd155400bb7ac, type: 3}
+      propertyPath: m_Drag
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926764610859745813, guid: 52ead5e30d6cedb4697cd155400bb7ac, type: 3}
+      propertyPath: m_Mass
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926764610859745813, guid: 52ead5e30d6cedb4697cd155400bb7ac, type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1926764610859745813, guid: 52ead5e30d6cedb4697cd155400bb7ac, type: 3}
       propertyPath: m_Interpolate
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926764610859745813, guid: 52ead5e30d6cedb4697cd155400bb7ac, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3337526508389670770, guid: 52ead5e30d6cedb4697cd155400bb7ac, type: 3}
       propertyPath: m_BaseOffset
@@ -1294,7 +1319,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3503610536045658900, guid: 52ead5e30d6cedb4697cd155400bb7ac, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 221.16998
+      value: 216.53
       objectReference: {fileID: 0}
     - target: {fileID: 3503610536045658900, guid: 52ead5e30d6cedb4697cd155400bb7ac, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1336,7 +1361,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: MonsterPrefab
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7980787405630001183, guid: 52ead5e30d6cedb4697cd155400bb7ac, type: 3}
+      propertyPath: navMeshAgent
+      value: 
+      objectReference: {fileID: 786715043}
+    m_RemovedComponents:
+    - {fileID: 1977049687395473901, guid: 52ead5e30d6cedb4697cd155400bb7ac, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

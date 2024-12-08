@@ -3,7 +3,8 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     public int maxHealth = 100;
-    private int currentHealth;
+    public int currentHealth;
+    public UnityEngine.AI.NavMeshAgent navMeshAgent;
     private bool isVulnerable = false; // Tracks if the enemy can take damage
     private Collider mainCollider;
     private Collider[] ragdollColliders;
@@ -105,6 +106,13 @@ public class EnemyHealth : MonoBehaviour
         if (monsterSound != null)
         {
             monsterSound.StopMonsterSound();
+        }
+
+        // Disable NavMeshAgent if it's assigned
+        if (navMeshAgent != null)
+        {
+            navMeshAgent.enabled = false;
+            Debug.Log("NavMeshAgent stopped.");
         }
 
         // Enable ragdoll

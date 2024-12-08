@@ -80,41 +80,7 @@ public class EnemyMovement : MonoBehaviour
             navMeshAgent.isStopped = true;
         }
 
-        // Wait for the death animation to finish before enabling ragdoll
-        StartCoroutine(WaitForDeathAnimation());
+
     }
 
-    private System.Collections.IEnumerator WaitForDeathAnimation()
-    {
-        // Assuming the death animation length is known (e.g., 2 seconds), or you can dynamically check the animation length
-        if (animator != null)
-        {
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            float deathAnimationLength = stateInfo.length; // Get the length of the current animation
-            yield return new WaitForSeconds(deathAnimationLength); // Wait until the death animation finishes
-        }
-
-        // After the death animation is done, enable ragdoll
-        EnableRagdoll();
-    }
-
-    void EnableRagdoll()
-    {
-        // Enable ragdoll physics (assuming ragdoll components are set up on the enemy)
-        foreach (var rb in GetComponentsInChildren<Rigidbody>())
-        {
-            rb.isKinematic = false; // Enable physics on the ragdoll parts
-        }
-
-        foreach (var col in GetComponentsInChildren<Collider>())
-        {
-            col.enabled = true; // Enable colliders for ragdoll physics
-        }
-
-        // Optionally disable the animator once ragdoll physics are active
-        if (animator != null)
-        {
-            animator.enabled = false; // Disable animator to prevent conflicting with ragdoll
-        }
-    }
 }
