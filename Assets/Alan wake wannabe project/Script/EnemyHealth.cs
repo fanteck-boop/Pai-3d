@@ -47,7 +47,6 @@ public class EnemyHealth : MonoBehaviour
         Rigidbody mainRb = GetComponent<Rigidbody>();
         if (mainRb != null)
         {
-            mainRb.useGravity = !status;
             mainRb.isKinematic = status;
         }
     }
@@ -65,7 +64,7 @@ public class EnemyHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Die(Vector3.zero); // Default explosion position
+            Die(); // Default behavior
         }
     }
 
@@ -76,7 +75,7 @@ public class EnemyHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Die(Vector3.zero); // Default explosion position
+            Die(); // Default behavior
         }
     }
 
@@ -97,34 +96,18 @@ public class EnemyHealth : MonoBehaviour
         return isVulnerable; // Return the current vulnerability status
     }
 
-    public void Die(Vector3 explosionPosition)
+    public void Die()
     {
         Debug.Log("Enemy " + gameObject.name + " has died!");
+
         // Stop monster sound
         MonsterSound monsterSound = GetComponent<MonsterSound>();
         if (monsterSound != null)
         {
             monsterSound.StopMonsterSound();
         }
-        KillEnemy(explosionPosition);
-    }
 
-    public void KillEnemy(Vector3 explosionPosition)
-    {
         // Enable ragdoll
         ActivateRagdoll(true);
-
-        // Apply explosion force to all rigidbodies in ragdoll colliders
-        foreach (Collider col in ragdollColliders)
-        {
-            if (col != mainCollider)
-            {
-                Rigidbody rb = col.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.AddExplosionForce(40f, explosionPosition, 3f, 3f, ForceMode.VelocityChange);
-                }
-            }
-        }
     }
 }
